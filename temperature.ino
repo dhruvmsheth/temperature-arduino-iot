@@ -77,7 +77,12 @@ ultra();
    // call function to send data to Thingspeak
    Send_Data();
     //delay
-    delay(250);
+    delay(50);
+    
+  if(amg.readThermistor() > 38.1) // if a person with fever is detetcted, he is not allowed to enter
+                                    // a person with fever has an avg body temperature of 38.1degree celsius
+   servo1.write(180);
+   digitalWrite(5, HIGH); //Turns on the buzzer to alarm people
   }
   
   void Connect_to_Wifi()
@@ -92,7 +97,7 @@ ultra();
 
   while (WiFiMulti.run() != WL_CONNECTED) {
     Serial.print(".");
-    delay(500);
+    delay(10);
   }
 
   Serial.println("");
@@ -118,11 +123,6 @@ void ultra(){
 void Send_Data()
 {
 
-  // map the moist to 0 and 100% for a nice overview in thingspeak.
-  
-  value = constrain(value,0,5000);
-  value = map(value,0,5000,100,0);
-
   Serial.println("Prepare to send data");
 
   // Use WiFiClient class to create TCP connections
@@ -138,7 +138,7 @@ void Send_Data()
   {
     String data_to_send = api_key;
     data_to_send += "&field1=";
-    data_to_send += String(amg);
+    data_to_send += string(amg.readThermistor());
     data_to_send += "\r\n\";
 
     client.print("POST /update HTTP/1.1\n");
