@@ -82,7 +82,7 @@ ultra();
   if(amg.readThermistor() > 38.1) // if a person with fever is detetcted, he is not allowed to enter
                                     // a person with fever has an avg body temperature of 38.1degree celsius
    servo1.write(180);
-   digitalWrite(5, HIGH); //Turns on the buzzer to alarm people
+   digitalWrite(6, HIGH); //Turns on the buzzer to alarm people
   }
   
   void Connect_to_Wifi()
